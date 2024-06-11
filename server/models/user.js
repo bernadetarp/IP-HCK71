@@ -12,7 +12,18 @@ module.exports = (sequelize, DataTypes) => {
     }
   }
   User.init({
-    name: DataTypes.STRING,
+    name: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      validate: {
+        notNull: {
+          msg: "Name is required"
+        },
+        notEmpty: {
+          msg: "Name is required"
+        }
+      }
+    },
     email: {
       type: DataTypes.STRING,
       allowNull: false,
@@ -44,8 +55,8 @@ module.exports = (sequelize, DataTypes) => {
           msg: "Password is required"
         },
         len: {
-          msg: "Minimum password length is 5",
-          args: [5, Infinity]
+          msg: "Minimum password length is 8",
+          args: [8, Infinity]
         }
       }
     },
@@ -59,6 +70,9 @@ module.exports = (sequelize, DataTypes) => {
         if (user.password) {
           user.password = hashPassword(user.password);
         }
+        
+        user.imageUrl = "",
+        user.phoneNumber = ""
       }
     }
   });

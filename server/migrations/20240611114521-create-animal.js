@@ -42,6 +42,9 @@ module.exports = {
       crossing: {
         type: Sequelize.STRING
       },
+      status: {
+        type: Sequelize.STRING
+      },
       price: {
         type: Sequelize.INTEGER
       },
