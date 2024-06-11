@@ -1,5 +1,16 @@
-// npx sequelize model:create --name "User" --attributes name:string,email:string,password:string,imageUrl:string,phoneNumber:string
-// npx sequelize model:create --name "Animal" --attributes intakeType:string,inDate:string,petName:string,animalType:string,petAge:string,petSize:string,color:string,breed:string,sex:string,urlLink:string,crossing:string,price:integer
-// npx sequelize model:create --name "Transaction" --attributes UserId:integer,AnimalId:integer
+require("dotenv").config();
 
-// npx sequelize seed:generate --name "Animals"
+const express = require('express')
+const app = express()
+const router = require("./routers");
+
+const cors = require("cors");
+
+app.use(cors());
+
+app.use(express.urlencoded({ extended: true }));
+app.use(express.json());
+
+app.use("/", router);
+
+module.exports = app;

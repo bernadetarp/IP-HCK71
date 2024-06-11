@@ -6,12 +6,6 @@ const axios = require("axios")
 module.exports = {
   async up (queryInterface, Sequelize) {
 
-    // const response = await axios.get("https://pet-data.p.rapidapi.com/records?orderBy=dataListIndex_asc&index=0&limit=20", {
-    //   headers: {
-    //     Authorization: "d110c449a2msh7eec7ec3ac4265dp17f8fdjsn368645d2ff51"
-    //   }
-    // });
-
     const response = await axios({
       method: 'GET',
       url: 'https://pet-data.p.rapidapi.com/records',
