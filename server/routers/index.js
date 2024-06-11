@@ -12,8 +12,8 @@ router.post("/register", Controller.register);
 router.post("/login", Controller.login);
 
 router.use(authentication);
-router.put("/:userId/user-profile", Controller.editUserProfile)
-router.delete("/:userId/user-profile", Controller.deleteUserProfile)
+router.put("/user-profile", Controller.editUserProfile)
+router.delete("/user-profile", Controller.deleteUserProfile)
 
 // router.get("/:id/application-form", Controller.formAdoption);
 // router.get("/:id/payment", Controller.payment);

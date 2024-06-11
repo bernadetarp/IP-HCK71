@@ -1,4 +1,4 @@
-const { comparePassword } = require("../helpers/bcrypt");
+const { comparePassword, hashPassword } = require("../helpers/bcrypt");
 const { signToken } = require("../helpers/jwt");
 const { User, Animal } = require("../models");
 
@@ -6,7 +6,9 @@ class Controller {
     // --- Animals
     static async showAllAnimals(req, res, next) {
         try {
-            
+            const dataAnimals = await Animal.findAll();
+            res.status(200).json(dataAnimals);
+
         } catch (error) {
             next(error);
         }
@@ -14,23 +16,15 @@ class Controller {
 
     static async showAnimalById(req, res, next) {
         try {
-            
-        } catch (error) {
-            next(error);
-        }
-    }
+            const { id } = req.params;
+            const dataAnimalById = await Animal.findByPk(id);
 
-    static async formAdoption(req, res, next) {
-        try {
-            
-        } catch (error) {
-            next(error);
-        }
-    }
+            if (!dataAnimalById) {
+                throw { name: "DataUndefined"};
+            }
 
-    static async payment(req, res, next) {
-        try {
-            
+            res.status(200).json(dataAnimalById)
+
         } catch (error) {
             next(error);
         }
@@ -81,15 +75,35 @@ class Controller {
 
     static async editUserProfile(req, res, next) {
         try {
+            const { id } = req.user;
+            const findUserById = await User.findByPk(id);
             
+            const { name, email, password, imageUrl, phoneNumber } = req.body
+
+            if (!password) {
+                throw { name: "PasswordRequired" }
+            } else if (password.length < 8) {
+                res.status(400).json({message: "Minimum password length is 8"})
+            }
+
+            await findUserById.update({name, email, password: hashPassword(password), imageUrl, phoneNumber});
+
+            res.status(200).json({ message: `Your profile successfully updated` });
+
         } catch (error) {
+            console.log(error)
             next(error);
         }
     }
 
     static async deleteUserProfile(req, res, next) {
         try {
-            
+            const { id } = req.user;
+            const findUserById = await User.findByPk(id);
+
+            await findUserById.destroy();
+            res.status(200).json({ message: `Your account successfully deleted` });
+
         } catch (error) {
             next(error);
         }
