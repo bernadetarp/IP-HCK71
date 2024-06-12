@@ -12,29 +12,29 @@ module.exports = (sequelize, DataTypes) => {
       User.hasMany(models.Transaction, { foreignKey: "UserId" })
     }
 
-    static async nodemailer(email) {
-      transporter = nodemailer.createTransport({
-       service: 'gmail',
-       auth: {
-         user: 'youremail@gmail.com',
-         pass: 'yourpassword'
-       }
-     });
-     
-     var mailOptions = {
-       from: 'youremail@gmail.com',
-       to: 'myfriend@yahoo.com',
-       subject: 'Sending Email using Node.js',
-       text: 'That was easy!'
-     };
-     
-     transporter.sendMail(mailOptions, function(error, info){
-       if (error) {
-         console.log(error);
-       } else {
-         console.log('Email sent: ' + info.response);
-       }
-     });
+    static async nodemailer(email, link) {
+      let transporter = nodemailer.createTransport({
+        service: 'gmail',
+        auth: {
+          user: 'bernadetargn@gmail.com',
+          pass: 'qfjy igaf rtvi eejs'
+        }
+      });
+
+      var mailOptions = {
+        from: 'bernadetargn@gmail.com',
+        to: email,
+        subject: 'Reset your Password',
+        text: link
+      };
+
+      transporter.sendMail(mailOptions, function (error, info) {
+        if (error) {
+          console.log(error);
+        } else {
+          console.log('Email sent: ' + info.response);
+        }
+      });
     }
   }
   User.init({
@@ -96,9 +96,9 @@ module.exports = (sequelize, DataTypes) => {
         if (user.password) {
           user.password = hashPassword(user.password);
         }
-        
+
         user.imageUrl = "",
-        user.phoneNumber = ""
+          user.phoneNumber = ""
       }
     }
   });

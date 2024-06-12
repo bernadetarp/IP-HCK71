@@ -109,9 +109,10 @@ class Controller {
             }
 
             const token = signToken({ id: findUser.id }, process.env.JWT_SECRET, { expiresIn: "5m" });
-            const link = `http://localhost:3000/reset-password/${findUser.id}/${token}`
+            const link = `http://localhost:5173/reset-password/${findUser.id}/${token}`
 
-            console.log(link)
+            await User.nodemailer(email, link)
+            // console.log(link)
             // res.status(200).json({ access_token: token});
 
         } catch (error) {
