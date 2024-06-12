@@ -1,15 +1,41 @@
 const { comparePassword, hashPassword } = require("../helpers/bcrypt");
-const { signToken } = require("../helpers/jwt");
-const { User, Animal } = require("../models");
+const { signToken, verifyToken } = require("../helpers/jwt");
+const { User, Animal, Transaction } = require("../models");
+const { Op, where } = require("sequelize");
 
 class Controller {
     // --- Animals
     static async showAllAnimals(req, res, next) {
         try {
-            const dataAnimals = await Animal.findAll();
+            const { search, sort, filter } = req.query;
+            const option = { 
+                where: {}
+            };
+
+            if (filter) {
+                option.where = {
+                    animalType: filter
+                }
+            }
+
+            if (sort) {
+                const order = sort[0] === "-" ? "DESC" : "ASC";
+                const columnName = order === "DESC" ? sort.slice(1) : sort;
+
+                option.order = [[ columnName, order ]];
+            }
+
+            if (search) {
+                option.where.petName = {
+                    [Op.iLike]: `%${search}%`
+                }
+            }
+
+            const dataAnimals = await Animal.findAll(option);
             res.status(200).json(dataAnimals);
 
         } catch (error) {
+            console.log(error)
             next(error);
         }
     }
@@ -73,6 +99,78 @@ class Controller {
         }
     }
 
+    static async forgotPassword(req, res, next) {
+        try {
+            const { email } = req.body;
+            const findUser = await User.findOne({ where: {email} });
+
+            if (!findUser) {
+                res.status(404).json({message: "User Not Found"});
+            }
+
+            const token = signToken({ id: findUser.id }, process.env.JWT_SECRET, { expiresIn: "5m" });
+            const link = `http://localhost:3000/reset-password/${findUser.id}/${token}`
+
+            console.log(link)
+            // res.status(200).json({ access_token: token});
+
+        } catch (error) {
+            console.log(error, "<<<< --- dari forgotPassword")
+            next(error)
+        }
+    }
+
+    static async getResetPassword(req, res, next) {
+        try {
+            const {UserId, token} = req.params;
+
+            const findUser = await User.findOne({ where: {id: UserId} });
+
+            if (!findUser) {
+                res.status(404).json({message: "User Not Found"});
+            }
+
+            const verify = verifyToken(token);
+
+            if (!verify) {
+                res.json({message: "Not Verified"})
+            }
+
+            res.json({message: "Verified"})
+
+        } catch (error) {
+            console.log(error, "<<<--- dari getResetPassword")
+            next(error);
+        }
+    }
+
+    static async postResetPassword(req, res, next) {
+        try {
+            const {UserId, token} = req.params;
+            const { password } = req.body;
+
+            const findUser = await User.findOne({ where: {id: UserId} });
+
+            if (!findUser) {
+                res.status(404).json({message: "User Not Found"});
+            }
+
+            const verify = verifyToken(token);
+
+            if (!verify) {
+                res.json({message: "Not Verified"})
+            }
+
+            await findUser.update({password: hashPassword(password)})
+            res.status(200).json({message: "Password updated!"})
+
+
+        } catch (error) {
+            console.log(error, "<<<--- dari getResetPassword")
+            next(error);
+        }
+    }
+
     static async editUserProfile(req, res, next) {
         try {
             const { id } = req.user;
@@ -96,12 +194,14 @@ class Controller {
         }
     }
 
-    static async deleteUserProfile(req, res, next) {
+    static async deleteUserAccount(req, res, next) {
         try {
             const { id } = req.user;
             const findUserById = await User.findByPk(id);
-
+                
+            await Transaction.destroy({where: {UserId: id}});
             await findUserById.destroy();
+
             res.status(200).json({ message: `Your account successfully deleted` });
 
         } catch (error) {

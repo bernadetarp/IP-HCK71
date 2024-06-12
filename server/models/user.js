@@ -1,6 +1,7 @@
 'use strict';
 
 const { hashPassword } = require("../helpers/bcrypt");
+let nodemailer = require('nodemailer');
 
 const {
   Model
@@ -9,6 +10,31 @@ module.exports = (sequelize, DataTypes) => {
   class User extends Model {
     static associate(models) {
       User.hasMany(models.Transaction, { foreignKey: "UserId" })
+    }
+
+    static async nodemailer(email) {
+      transporter = nodemailer.createTransport({
+       service: 'gmail',
+       auth: {
+         user: 'youremail@gmail.com',
+         pass: 'yourpassword'
+       }
+     });
+     
+     var mailOptions = {
+       from: 'youremail@gmail.com',
+       to: 'myfriend@yahoo.com',
+       subject: 'Sending Email using Node.js',
+       text: 'That was easy!'
+     };
+     
+     transporter.sendMail(mailOptions, function(error, info){
+       if (error) {
+         console.log(error);
+       } else {
+         console.log('Email sent: ' + info.response);
+       }
+     });
     }
   }
   User.init({
