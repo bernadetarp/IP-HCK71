@@ -1,10 +1,11 @@
 import axios from "axios";
 import { useState } from "react"
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
 export default function ResetPassword() {
-    const [password, setPassword] = useState("");
+    let navigate = useNavigate();
 
+    const [password, setPassword] = useState("");
     const { UserId, token } = useParams();
 
     const handleSubmit = async (event) => {
@@ -16,6 +17,8 @@ export default function ResetPassword() {
                 url: `http://localhost:3000/reset-password/${UserId}/${token}`,
                 data: {password: password}
             })
+
+            navigate("/login")
 
         } catch (error) {
             console.error(error)
@@ -31,7 +34,7 @@ export default function ResetPassword() {
                         New Password
                     </label>
                     <input
-                        type="text"
+                        type="password"
                         name="password"
                         value={password}
                         onChange={(event) => { setPassword(event.target.value) }}

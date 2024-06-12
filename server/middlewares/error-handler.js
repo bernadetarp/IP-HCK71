@@ -11,6 +11,8 @@ function errorHandler(error, req, res, next) {
         res.status(401).json({ message: error.message });
     } else if (error.name === "JsonWebTokenError") {
         res.status(401).json({ message: "Invalid Token" });
+    } else if (error.name === "TokenExpiredError") {
+        res.status(401).json({ message: "Expired Login Session" })
     } else if (error.name === "Forbidden") {
         res.status(403).json({ message: error.message });
     } else if (error.name === "DataUndefined") {

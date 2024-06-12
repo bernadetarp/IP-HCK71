@@ -10,6 +10,7 @@ router.get("/:id", Controller.showAnimalById);
 
 router.post("/register", Controller.register);
 router.post("/login", Controller.login);
+router.post("/login-google", Controller.loginByGoogle)
 router.post("/forgot-password", Controller.forgotPassword);
 router.get("/reset-password/:UserId/:token", Controller.getResetPassword);
 router.post("/reset-password/:UserId/:token", Controller.postResetPassword);

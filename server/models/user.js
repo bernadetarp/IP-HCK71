@@ -14,27 +14,27 @@ module.exports = (sequelize, DataTypes) => {
 
     static async nodemailer(email, link) {
       let transporter = nodemailer.createTransport({
-        service: 'gmail',
-        auth: {
-          user: 'bernadetargn@gmail.com',
-          pass: 'qfjy igaf rtvi eejs'
-        }
-      });
-
-      var mailOptions = {
-        from: 'bernadetargn@gmail.com',
-        to: email,
-        subject: 'Reset your Password',
-        text: link
-      };
-
-      transporter.sendMail(mailOptions, function (error, info) {
-        if (error) {
-          console.log(error);
-        } else {
-          console.log('Email sent: ' + info.response);
-        }
-      });
+       service: 'gmail',
+       auth: {
+         user: 'bernadetargn@gmail.com',
+         pass: process.env.NODEMAILER_PASS
+       }
+     });
+     
+     var mailOptions = {
+       from: 'bernadetargn@gmail.com',
+       to: email,
+       subject: 'Reset your Password',
+       text: link
+     };
+     
+     transporter.sendMail(mailOptions, function(error, info){
+       if (error) {
+         console.log(error);
+       } else {
+         console.log('Email sent: ' + info.response);
+       }
+     });
     }
   }
   User.init({
@@ -95,10 +95,7 @@ module.exports = (sequelize, DataTypes) => {
       beforeCreate(user) {
         if (user.password) {
           user.password = hashPassword(user.password);
-        }
-
-        user.imageUrl = "",
-          user.phoneNumber = ""
+        }        
       }
     }
   });

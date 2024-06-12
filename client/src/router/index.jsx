@@ -6,10 +6,6 @@ import ResetPassword from "../views/ResetPassword";
 
 const router = createBrowserRouter([
     {
-        path: "/",
-        element: <div>Hello World!</div>,
-    },
-    {
         path: "/register",
         element: <Register />,
     },
@@ -18,6 +14,13 @@ const router = createBrowserRouter([
         element: <Login />,
         loader: () => {
             return localStorage.getItem("access_token") ? redirect("/") : null;
+        }
+    },
+    {
+        path: "/",
+        element: <div>Hello World!</div>,
+        loader: () => {
+            return !localStorage.getItem("access_token") ? redirect("/login") : null;
         }
     },
     {

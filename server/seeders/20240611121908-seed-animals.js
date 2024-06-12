@@ -15,7 +15,7 @@ module.exports = {
         limit: '50'
       },
       headers: {
-        'x-rapidapi-key': '',
+        'x-rapidapi-key': process.env.RAPIDAPI_KEY,
         'x-rapidapi-host': 'pet-data.p.rapidapi.com'
       }
     });
