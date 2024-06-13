@@ -12,7 +12,7 @@ export default function Payment() {
                 headers: {
                     Authorization: `Bearer ${localStorage.access_token}`
                 }
-                })
+            })
             console.log(data.orderId, "<<< dari PaymentPage")
 
             window.snap.pay(data.midtransToken.token, {

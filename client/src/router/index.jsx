@@ -6,6 +6,8 @@ import ForgotPassword from "../views/ForgotPassword";
 import ResetPassword from "../views/ResetPassword";
 import Homepage from "../views/HomePage";
 import Payment from "../views/PaymentPage";
+import DetailPage from "../views/DetailPage";
+import FormApplication from "../views/FormApplication";
 
 const router = createBrowserRouter([
     {
@@ -39,6 +41,21 @@ const router = createBrowserRouter([
     {
         path: "/",
         element: <Homepage />
+    },
+    {
+        path: "/user-profile",
+        element: <div>User Profile</div>
+    },
+    {
+        path: "/:id",
+        element: <DetailPage />
+    },
+    {
+        path: "/:id/application-form",
+        element: <FormApplication />,
+        loader: () => {
+            return !localStorage.getItem("access_token") ? redirect("/:id") : null;
+        }
     },
     {
         path: "/:id/payment",

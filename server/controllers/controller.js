@@ -174,6 +174,18 @@ class Controller {
         }
     }
 
+    static async getUserProfile(req, res, next) {
+        try {
+            const { id } = req.user;
+            const findUserById = await User.findByPk(id);
+
+            res.status(200).json({id, email: findUserById.email, name: findUserById.name, phoneNumber: findUserById.phoneNumber});
+
+        } catch (error) {
+            next(error);
+        }
+    }
+
     static async editUserProfile(req, res, next) {
         try {
             const { id } = req.user;
@@ -289,7 +301,6 @@ class Controller {
                     "secure": true
                 },
                 "customer_details": {
-                    "name": findUser.name,
                     "email": findUser.email,
                 }
             };
@@ -310,13 +321,10 @@ class Controller {
 
     static async payment(req, res, next) {
         try {
-            // const { UserId } = req.user;
             const { orderId } = req.body;
-            // console.log(orderId, "<<< ini orderId")
             await Transaction.update({ isPaid: true }, { where: { orderId } });
 
             const order = await Transaction.findOne({ where: { orderId } })
-            // console.log(order, "<<< order dari payment");
             if (!order) {
                 return res.status(404).json({message: "Transaction not found"})
             }
@@ -334,13 +342,12 @@ class Controller {
                 }
             })
             console.log(response.data, "<<< dari response.data payment")
-            
+
         } catch (error) {
             console.log(error)
             next(error)
         }
     }
-
 }
 
 module.exports = Controller;

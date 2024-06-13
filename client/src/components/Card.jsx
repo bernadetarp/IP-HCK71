@@ -1,6 +1,8 @@
+import PropTypes from "prop-types";
+import { Link } from "react-router-dom";
+
 export default function Card(props) {
-    // console.log(props.animals)
-    const { petName, animalType, sex, breed, petAge } = props.animals;
+    const { id, petName, animalType, sex, breed, petAge } = props.animals;
 
     let convert;
 
@@ -9,17 +11,14 @@ export default function Card(props) {
     if (sex === "S") convert = "Spayed";
     if (sex === "N") convert = "Neutered";
     if (sex === "U") convert = "Undefined"
-    // if  
-
-
 
     return (
         <div className="max-w-xs mt-5 bg-white border border-gray-200 rounded-3xl shadow">
-            <a href="#">
+            <Link to={`${id}`}>
                 <img className="rounded-t-3xl" src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/3a/Cat03.jpg/1200px-Cat03.jpg" alt="" />
-            </a>
+            </Link>
             <div className="p-5">
-                <a href="#" className="flex justify-between items-center">
+                <Link to={`${id}`} className="flex justify-between items-center">
                     <h5 className="text-xl font-bold tracking-tight text-gray-900">
                         {petName}
                     </h5>
@@ -34,7 +33,7 @@ export default function Card(props) {
                             :
                             <span className="bg-yellow-100 text-yellow-800 text-sm font-medium me-2 px-2.5 py-1.5 rounded">{animalType}</span>
                     }
-                </a>
+                </Link>
 
                 <p className="mt-2">Breed: {breed}</p>
                 <div className="mt-2 mb-2 flex">
@@ -45,4 +44,15 @@ export default function Card(props) {
         </div>
 
     )
+}
+
+Card.propTypes = {
+    animals: PropTypes.exact({
+        id: PropTypes.number,
+        petName: PropTypes.string,
+        animalType: PropTypes.string, 
+        sex: PropTypes.string, 
+        breed: PropTypes.string, 
+        petAge: PropTypes.string
+    })
 }
