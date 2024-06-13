@@ -10,11 +10,19 @@ module.exports = (sequelize, DataTypes) => {
     }
   }
   Transaction.init({
+    orderId: DataTypes.STRING,
     UserId: DataTypes.INTEGER,
-    AnimalId: DataTypes.INTEGER
+    AnimalId: DataTypes.INTEGER,
+    isFilledForm: DataTypes.BOOLEAN,
+    isPaid: DataTypes.BOOLEAN,
   }, {
     sequelize,
     modelName: 'Transaction',
+    hooks: {
+      beforeCreate(transaction) {
+        transaction.isPaid = false;
+      }
+    }
   });
   return Transaction;
 };

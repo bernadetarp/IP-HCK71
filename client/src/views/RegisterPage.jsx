@@ -1,14 +1,12 @@
 import { useState } from "react"
 import { useNavigate } from "react-router-dom";
-import axios from "axios"
+import axios from "../utils/axios"
 
 export default function Register() {
     const [name, setName] = useState("");
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
-
-    console.log({name, email, password})
-
+    
     const navigate = useNavigate();
 
     const handleSubmit = async (event) => {
@@ -17,7 +15,7 @@ export default function Register() {
         try {
             await axios({
                 method: "POST",
-                url: "http://localhost:3000/register",
+                url: "/register",
                 data: {
                     name: name,
                     email: email,

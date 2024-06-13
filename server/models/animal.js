@@ -12,7 +12,7 @@ module.exports = (sequelize, DataTypes) => {
     intakeType: DataTypes.STRING,
     inDate: DataTypes.STRING,
     petName: DataTypes.STRING,
-    // description: DataTypes.STRING,
+    description: DataTypes.STRING,
     animalType: DataTypes.STRING,
     petAge: DataTypes.STRING,
     petSize: DataTypes.STRING,
@@ -21,11 +21,16 @@ module.exports = (sequelize, DataTypes) => {
     sex: DataTypes.STRING,
     urlLink: DataTypes.STRING,
     crossing: DataTypes.STRING,
-    // status: DataTypes.STRING,
+    status: DataTypes.BOOLEAN,
     price: DataTypes.INTEGER
   }, {
     sequelize,
     modelName: 'Animal',
+    hooks: {
+      beforeCreate(animal) {
+        animal.status = false;
+      }
+    }
   });
   return Animal;
 };

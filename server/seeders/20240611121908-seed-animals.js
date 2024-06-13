@@ -12,10 +12,10 @@ module.exports = {
       params: {
         orderBy: 'dataListIndex_asc',
         index: '0',
-        limit: '50'
+        limit: '20'
       },
       headers: {
-        'x-rapidapi-key': process.env.RAPIDAPI_KEY,
+        'x-rapidapi-key': "d110c449a2msh7eec7ec3ac4265dp17f8fdjsn368645d2ff51",
         'x-rapidapi-host': 'pet-data.p.rapidapi.com'
       }
     });

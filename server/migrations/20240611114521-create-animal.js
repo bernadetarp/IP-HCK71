@@ -21,9 +21,9 @@ module.exports = {
       animalType: {
         type: Sequelize.STRING
       },
-      // description: {
-      //   type: Sequelize.STRING
-      // },
+      description: {
+        type: Sequelize.STRING
+      },
       petAge: {
         type: Sequelize.STRING
       },
@@ -45,9 +45,9 @@ module.exports = {
       crossing: {
         type: Sequelize.STRING
       },
-      // status: {
-      //   type: Sequelize.STRING
-      // },
+      status: {
+        type: Sequelize.BOOLEAN
+      },
       price: {
         type: Sequelize.INTEGER
       },

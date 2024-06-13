@@ -31,10 +31,9 @@ export default function Login() {
 
     async function handleCredentialResponse(response) {
         try {
-            // console.log("Encoded JWT ID token: " + response.credential);
             const { data } = await axios({
                 method: "POST",
-                url: "http://localhost:3000/login-google",
+                url: "/login-google",
                 headers: {
                     google_token: response.credential
                 }

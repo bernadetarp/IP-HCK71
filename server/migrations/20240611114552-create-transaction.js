@@ -9,6 +9,9 @@ module.exports = {
         primaryKey: true,
         type: Sequelize.INTEGER
       },
+      orderId: {
+        type: Sequelize.STRING,
+      },
       UserId: {
         type: Sequelize.INTEGER,
         references: {
@@ -22,6 +25,12 @@ module.exports = {
           model: "Animals",
           key: "id"
         }
+      },
+      isFilledForm: {
+        type: Sequelize.BOOLEAN
+      },
+      isPaid: {
+        type: Sequelize.BOOLEAN
       },
       createdAt: {
         allowNull: false,

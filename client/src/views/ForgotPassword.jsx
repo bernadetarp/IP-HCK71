@@ -1,4 +1,4 @@
-import axios from "axios";
+import axios from "../utils/axios";
 import { useState } from "react"
 
 export default function ForgotPassword() {
@@ -10,7 +10,7 @@ export default function ForgotPassword() {
         try {
             await axios({
                 method: "POST",
-                url: "http://localhost:3000/forgot-password",
+                url: "/forgot-password",
                 data: {email: email}
             })
 

@@ -1,4 +1,4 @@
-import axios from "axios";
+import axios from "../utils/axios";
 import { useState } from "react"
 import { useNavigate, useParams } from "react-router-dom";
 
@@ -14,7 +14,7 @@ export default function ResetPassword() {
         try {
             await axios({
                 method: "POST",
-                url: `http://localhost:3000/reset-password/${UserId}/${token}`,
+                url: `/reset-password/${UserId}/${token}`,
                 data: {password: password}
             })
 

@@ -1,9 +1,13 @@
 const { comparePassword, hashPassword } = require("../helpers/bcrypt");
 const { signToken, verifyToken } = require("../helpers/jwt");
+
 const { User, Animal, Transaction } = require("../models");
 const { Op } = require("sequelize");
+
 const { OAuth2Client } = require("google-auth-library");
 const client = new OAuth2Client();
+const midtransClient = require('midtrans-client');
+const axios = require("axios")
 
 class Controller {
     // --- Animals
@@ -113,12 +117,9 @@ class Controller {
             const token = signToken({ id: findUser.id }, { expiresIn: "5m" });
             const link = `http://localhost:5173/reset-password/${findUser.id}/${token}`
 
-            // await User.nodemailer(email, link)
-            // console.log(link)
-            // res.status(200).json({ access_token: token});
+            await User.nodemailer(email, link)
 
         } catch (error) {
-            console.log(error, "<<<< --- dari forgotPassword")
             next(error)
         }
     }
@@ -142,7 +143,6 @@ class Controller {
             res.json({ message: "Verified" })
 
         } catch (error) {
-            console.log(error, "<<<--- dari getResetPassword")
             next(error);
         }
     }
@@ -170,7 +170,6 @@ class Controller {
 
 
         } catch (error) {
-            console.log(error, "<<<--- dari getResetPassword")
             next(error);
         }
     }
@@ -193,7 +192,6 @@ class Controller {
             res.status(200).json({ message: `Your profile successfully updated` });
 
         } catch (error) {
-            console.log(error)
             next(error);
         }
     }
@@ -236,15 +234,112 @@ class Controller {
             })
 
             res.status(200).json({ access_token: signToken({ id: user.id }) });
-            // const access_token = signToken({ id: user.id })
-            // res.status(200).json({message: "Testtt"})
 
         } catch (error) {
-            // console.log(error)
             next(error);
         }
     }
 
+
+    // --- Transaction
+    static async formAdoption(req, res, next) {
+        try {
+            const { UserId } = req.user;
+            const { id } = req.params;
+
+            const { name, email, address, phoneNumber, householdType, isHavingPets, isHavingChildren, isAgree } = req.body;
+
+            if (!name || !email || !address || !phoneNumber || !householdType || !isHavingPets || !isHavingChildren || !isAgree) {
+                res.status(400).json({ message: "Please fill in all the data" });
+            }
+
+            await Transaction.create({ UserId, AnimalId: id, isFilledForm: true });
+
+        } catch (error) {
+            next(error)
+        }
+    }
+
+    static async generateMidtransToken(req, res, next) {
+        try {
+            const { id } = req.params;
+            const UserId = req.user.id;
+
+            const findAnimalById = await Animal.findByPk(id);
+            const findUser = await User.findByPk(UserId);
+
+            // if (findUser.isPaid) {
+            //     throw { name: "AlreadyPaid" }
+            // }
+
+            let snap = new midtransClient.Snap({
+                // Set to true if you want Production Environment (accept real transaction).
+                isProduction: false,
+                serverKey: process.env.MIDTRANS_SERVER_KEY
+            });
+
+            const orderId = "TRANSACTION_" + Math.floor(1000000 + Math.random() * 9000000);
+
+            let parameter = {
+                "transaction_details": {
+                    "order_id": orderId, // must be unique
+                    "gross_amount": findAnimalById.price
+                },
+                "credit_card": {
+                    "secure": true
+                },
+                "customer_details": {
+                    "name": findUser.name,
+                    "email": findUser.email,
+                }
+            };
+
+            const midtransToken = await snap.createTransaction(parameter)
+
+            if (midtransToken) {
+                await Transaction.create({ orderId: orderId, UserId: findUser.id, AnimalId: findAnimalById.id, isFilledForm: true });
+            }
+
+            res.status(200).json({ midtransToken, orderId });
+
+        } catch (error) {
+            console.log(error, "<<< error dari controller")
+            next(error)
+        }
+    }
+
+    static async payment(req, res, next) {
+        try {
+            // const { UserId } = req.user;
+            const { orderId } = req.body;
+            // console.log(orderId, "<<< ini orderId")
+            await Transaction.update({ isPaid: true }, { where: { orderId } });
+
+            const order = await Transaction.findOne({ where: { orderId } })
+            // console.log(order, "<<< order dari payment");
+            if (!order) {
+                return res.status(404).json({message: "Transaction not found"})
+            }
+
+            if (order.isPaid === "true") {
+                return res.status(400).json({message: "This transaction already paid"})
+            }
+
+            const serverKey = process.env.MIDTRANS_SERVER_KEY
+            const base64ServerKey = Buffer.from(serverKey + ":").toString('base64');
+
+            const response = await axios.get(`https://api.sandbox.midtrans.com/v2/${orderId}/status`, {
+                headers: {
+                    Authorization: `Basic ${serverKey}`
+                }
+            })
+            console.log(response.data, "<<< dari response.data payment")
+            
+        } catch (error) {
+            console.log(error)
+            next(error)
+        }
+    }
 
 }
 

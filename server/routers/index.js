@@ -19,8 +19,9 @@ router.use(authentication);
 router.put("/user-profile", Controller.editUserProfile)
 router.delete("/user-profile", Controller.deleteUserAccount)
 
-// router.get("/:id/application-form", Controller.formAdoption);
-// router.get("/:id/payment", Controller.payment);
+router.post("/:id/application-form", Controller.formAdoption);
+router.post("/:id/generate-midtrans-token", Controller.generateMidtransToken)
+router.patch("/:id/payment", Controller.payment);
 
 router.use(errorHandler);
 
