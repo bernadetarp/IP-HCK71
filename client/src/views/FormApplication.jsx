@@ -1,17 +1,23 @@
 import { useEffect, useState } from "react";
 // import Card from "../components/Card";
 import axios from "../utils/axios.js"
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
+// import { Link } from "react-router-dom";
+import { PreviewCard } from "../components/Card.jsx";
 
 export default function FormApplication() {
     const [animals, setAnimals] = useState([]);
     const [name, setName] = useState("")
     const [email, setEmail] = useState("")
     const [phoneNumber, setPhoneNumber] = useState("")
-    const [havingChildren, setHavingChildren] = useState("")
+    // const [havingChildren, setHavingChildren] = useState("")
+    // const [address, setAddress] = useState("");
+    // const [householdType, sethouseHoldType] = useState([])
+    // const [isHavingPets, setIsHavingPets] = useState(false);
+    // const [isAgree, setIsAgree] = useState(false);
 
     const { id } = useParams();
-
+    let navigate = useNavigate();
 
     const fetchUser = async () => {
         try {
@@ -40,6 +46,37 @@ export default function FormApplication() {
         }
     }
 
+    // name, email, address, phoneNumber, householdType, isHavingPets, isHavingChildren, isAgree
+
+    const handleSubmit = async (event) => {
+        event.preventDefault();
+
+        try {
+            // await axios({
+            //     method: "POST",
+            //     url: `/${id}/application-form`,
+            //     data: {
+            //         name: name,
+            //         email: email,
+            //         phoneNumber: phoneNumber,
+            //         addres: address,
+            //         havingChildren: havingChildren,
+            //         householdType: householdType,
+            //         isHavingPets: isHavingPets,
+            //         isAgree: isAgree
+            //     },
+            //     headers: {
+            //         Authorization: `Bearer ${localStorage.getItem("access_token")}`
+            //     }
+            // })
+
+            navigate(`/transaction/${id}/payment`)
+
+        } catch (error) {
+            console.log(error.response.data.message);
+        }
+    }
+
     useEffect(() => {
         fetchUser(),
             fetchAnimalById()
@@ -48,7 +85,8 @@ export default function FormApplication() {
 
     return (
         <div className="p-4">
-            <form className="max-w-sm mx-auto">
+            <PreviewCard key={id} animals={animals} />
+            <form className="max-w-sm mt-5 mx-auto" onSubmit={handleSubmit}>
                 <div className="mb-5">
                     <label
                         htmlFor="email"
@@ -63,7 +101,7 @@ export default function FormApplication() {
                         onChange={(event) => { setName(event.target.value) }}
                         className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
                         placeholder="name@flowbite.com"
-                        required=""
+                        required={true}
                     />
                 </div>
                 <div className="mb-5">
@@ -79,7 +117,7 @@ export default function FormApplication() {
                         value={email}
                         onChange={(event) => { setEmail(event.target.value) }}
                         className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
-                        required=""
+                        required={true}
                     />
                 </div>
                 <div className="mb-5">
@@ -95,7 +133,7 @@ export default function FormApplication() {
                         value={phoneNumber}
                         onChange={(event) => { setPhoneNumber(event.target.value) }}
                         className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
-                        required=""
+                        required={true}
                     />
                 </div>
                 <div className="mb-5">
@@ -108,10 +146,8 @@ export default function FormApplication() {
                     <input
                         type="text"
                         id="phoneNumber"
-                        value={havingChildren}
-                        onChange={(event) => { setHavingChildren(event.target.value) }}
                         className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
-                        required=""
+                        required={true}
                     />
                 </div>
                 <div className="mb-5">
@@ -126,6 +162,7 @@ export default function FormApplication() {
                             defaultChecked=""
                             id="default-radio-2"
                             type="radio"
+
                             defaultValue=""
                             name="default-radio"
                             className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500"
@@ -179,8 +216,6 @@ export default function FormApplication() {
                             Quite
                         </label>
                     </div>
-
-
                 </div>
 
 
@@ -190,9 +225,10 @@ export default function FormApplication() {
                         <input
                             id="terms"
                             type="checkbox"
+                            
                             defaultValue=""
                             className="w-4 h-4 border border-gray-300 rounded bg-gray-50 focus:ring-3 focus:ring-blue-300"
-                            required=""
+                            required={true}
                         />
                     </div>
                     <label
@@ -207,10 +243,11 @@ export default function FormApplication() {
                 </div>
                 <button
                     type="submit"
-                    className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center"
+                    className="w-full text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center"
                 >
-                    Register new account
+                    Submit
                 </button>
+
             </form>
 
         </div>

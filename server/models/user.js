@@ -21,7 +21,7 @@ module.exports = (sequelize, DataTypes) => {
        }
      });
      
-     var mailOptions = {
+     let mailOptions = {
        from: 'bernadetargn@gmail.com',
        to: email,
        subject: 'Reset your Password',
