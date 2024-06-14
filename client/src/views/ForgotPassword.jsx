@@ -36,7 +36,7 @@ export default function ForgotPassword() {
                         Your email
                     </label>
                     <input
-                        type="email"
+                        type="text"
                         name="email"
                         id="email"
                         value={email}
