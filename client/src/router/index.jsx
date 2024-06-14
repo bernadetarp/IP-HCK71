@@ -55,15 +55,12 @@ const router = createBrowserRouter([
         path: "/transaction/:id/application-form",
         element: <FormApplication />,
         loader: () => {
-            return !localStorage.getItem("access_token") ? redirect("/") : null;
+            return !localStorage.getItem("access_token") ? redirect("/login") : null;
         }
     },
     {
         path: "/transaction/:id/payment",
-        element: <Payment />,
-        loader: () => {
-            return !localStorage.getItem("access_token") ? redirect("/login") : null;
-        }
+        element: <Payment />
     },
 ])
 

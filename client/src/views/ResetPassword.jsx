@@ -2,6 +2,7 @@ import axios from "../utils/axios";
 import { useState } from "react"
 import { useNavigate, useParams } from "react-router-dom";
 import showToastError from "../utils/toast";
+import { showToastSuccess } from "../utils/toast";
 
 export default function ResetPassword() {
     let navigate = useNavigate();
@@ -13,13 +14,14 @@ export default function ResetPassword() {
         event.preventDefault();
 
         try {
-            await axios({
+            const { data } = await axios({
                 method: "POST",
                 url: `/reset-password/${UserId}/${token}`,
                 data: { password: password }
             })
 
             navigate("/login")
+            showToastSuccess(data?.message, "message")
 
         } catch (error) {
             showToastError(error.response?.data?.message || error.message, "error")

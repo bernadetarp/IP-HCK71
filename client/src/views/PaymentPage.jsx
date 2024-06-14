@@ -1,9 +1,28 @@
-import { useNavigate, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import axios from "../utils/axios";
+import { useState } from "react";
+import { useEffect } from "react";
+import { Link } from "react-router-dom";
+
 
 export default function Payment() {
     const { id } = useParams();
-    let navigate = useNavigate();
+    const [status, setStatus] = useState(false);
+
+    const fetchAnimalById = async () => {
+        try {
+            let { data } = await axios.get(`/${id}`)
+            setStatus(data.status);
+
+        } catch (error) {
+            console.error(error);
+        }
+    }
+
+    useEffect(() => {
+        fetchAnimalById()
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
 
     async function paid() {
         try {
@@ -14,7 +33,6 @@ export default function Payment() {
                     Authorization: `Bearer ${localStorage.access_token}`
                 }
             })
-            console.log(data, "<<<< data dari PaymentPage")
 
             window.snap.pay(data.midtransToken.token, {
                 // window.snap.embed(data.token, {
@@ -31,8 +49,6 @@ export default function Payment() {
                             Authorization: `Bearer ${localStorage.access_token}`
                         }
                     })
-
-                    navigate("/")
                 },
                 onPending: function (result) {
                     alert("wating your payment!"); console.log(result);
@@ -60,9 +76,17 @@ export default function Payment() {
                 </span>
             </div>
             <p className="mt-2 text-sm text-gray-600">Click the button below to proceed with payment.</p>
-            <button onClick={paid} className="py-2 px-4 bg-blue-500 text-white rounded-md shadow-md hover:bg-blue-600 transition duration-300">
+            <button onClick={paid} className={status === true ? "py-2 px-4 mt-5 bg-gray-300 text-white rounded-md" : "py-2 px-4 mt-5 bg-blue-500 text-white rounded-md shadow-md hover:bg-blue-600 transition duration-300"}
+                disabled={status === true ? true : false}>
                 Pay Now
             </button>
-        </div>
+            {status === true &&
+                <Link to="/">
+                    <button className="py-2 px-4 mt-4 bg-blue-500 text-white rounded-md shadow-md hover:bg-blue-600 transition duration-300">
+                        Back to Homepage
+                    </button>
+                </Link>
+            }
+        </div >
     )
 }

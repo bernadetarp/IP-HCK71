@@ -25,28 +25,91 @@ export default function DetailPage() {
     }, []);
 
     return (
-        <>
-            <img
-                className="h-40px object-cover w-full"
-                src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/3a/Cat03.jpg/1200px-Cat03.jpg"
-                alt="image description"
-            />
-            <div className="p-5">
-                <h3>{animals.petName}</h3>
-                <p>{animals.animalType}</p>
-                <p>{animals.breed}</p>
-                <p>{animals.color}</p>
-                <p>{animals.description}</p>
-                <p>{animals.inDate}</p>
-                <p>{animals.intakeType}</p>
-                <p>{animals.petAge}</p>
-                <p>{animals.petSize}</p>
-                <p>{animals.price}</p>
-                <p>{animals.sex}</p>
+        <div className="flex justify-center mt-10">
+            <div className="w-3/4">
+                <div className="max-w-sm w-full lg:max-w-full lg:flex">
+                    <div
+                        className="h-80 lg:h-auto object-cover lg:w-80 flex-none bg-cover rounded-t lg:rounded-t-none lg:rounded-l text-center overflow-hidden"
+                        style={{ backgroundImage: 'url()' }}
+                        title="Cat"
+                    ></div>
+                    <div className="border-r border-b border-l border-gray-400 lg:border-l-0 lg:border-t lg:border-gray-400 bg-white rounded-b lg:rounded-b-none lg:rounded-r p-4 flex flex-col justify-between leading-normal">
+                        <div className="mb-8">
+                            <p className="text-sm text-gray-600 flex items-center">
+                                {animals.animalType}
+                            </p>
+                            <div className="text-gray-900 font-bold text-xl mb-2">
+                                {animals.petName}
+                            </div>
+                            <p className="text-gray-700 text-base">
+                                {animals.breed},
+                                {animals.color}
+                            </p>
+                            <p className="text-gray-700 text-base">
+                                {animals.description}
+                            </p>
+                            <p className="text-gray-700 text-base">
+                                <p>{animals.inDate}</p>
+                                <p>{animals.intakeType}</p>
+                            </p>
+                            <p className="text-gray-700 text-base">
+                                <p>{animals.petAge}</p>
+                                <p>{animals.petSize}</p>
+                            </p>
+                            <h3>Rp {animals.price}</h3>
+                            <p>{animals.sex}</p>
+                        </div>
+                        <div className="bottom-0 w-full px-3 py-0.5 bg-white">
+                            <Link to={`/transaction/${id}/application-form`}>
+                                <button type="button" className="focus:outline-none text-white bg-purple-700 hover:bg-purple-800 focus:ring-4 focus:ring-purple-300 font-medium rounded-lg text-sm px-5 py-2.5 mb-2 mt-5 w-full">Adopt Now</button>
+                            </Link>
+                        </div>
+                    </div>
+                </div>
             </div>
-            <div className="bottom-0 w-full fixed px-3 py-0.5 bg-white shadow-[40px_35px_60px_-15px_rgba(0,0,0,1)]">
-                <Link to={`/transaction/${id}/application-form`}><button type="button" className="focus:outline-none text-white bg-purple-700 hover:bg-purple-800 focus:ring-4 focus:ring-purple-300 font-medium rounded-lg text-sm px-5 py-2.5 mb-2 mt-5 w-full">Adopt Now</button></Link>
-            </div>
-        </>
+        </div>
+
+
+
+        // <>
+
+        //     <div className="max-w-sm w-full lg:max-w-full lg:flex">
+        //         <div
+        //             className="h-48 lg:h-auto lg:w-48 flex-none bg-cover rounded-t lg:rounded-t-none lg:rounded-l text-center overflow-hidden"
+        //             style={{ backgroundImage: 'url("https://upload.wikimedia.org/wikipedia/commons/thumb/3/3a/Cat03.jpg/1200px-Cat03.jpg")' }}
+        //             title="Woman holding a mug"
+        //         ></div>
+        //         <div className="border-r border-b border-l border-gray-400 lg:border-l-0 lg:border-t lg:border-gray-400 bg-white rounded-b lg:rounded-b-none lg:rounded-r p-4 flex flex-col justify-between leading-normal">
+        //             <div className="mb-8">
+        //                 <p className="text-sm text-gray-600 flex items-center">
+        //                     {animals.animalType}
+        //                 </p>
+        //                 <div className="text-gray-900 font-bold text-xl mb-2">
+        //                     {animals.petName}
+        //                 </div>
+        //                 <p className="text-gray-700 text-base">
+        //                     {animals.breed},
+        //                     {animals.color}
+        //                 </p>
+        //                 <p className="text-gray-700 text-base">
+        //                     {animals.description}
+        //                 </p>
+        //                 <p className="text-gray-700 text-base">
+        //                     <p>{animals.inDate}</p>
+        //                     <p>{animals.intakeType}</p>
+        //                 </p>
+        //                 <p className="text-gray-700 text-base">
+        //                     <p>{animals.petAge}</p>
+        //                     <p>{animals.petSize}</p>
+        //                 </p>
+        //                 <p>{animals.price}</p>
+        //                 <p>{animals.sex}</p>
+        //             </div>
+        //             <div className="bottom-0 w-full px-3 py-0.5 bg-white">
+        //                 <Link to={`/transaction/${id}/application-form`}><button type="button" className="focus:outline-none text-white bg-purple-700 hover:bg-purple-800 focus:ring-4 focus:ring-purple-300 font-medium rounded-lg text-sm px-5 py-2.5 mb-2 mt-5 w-full">Adopt Now</button></Link>
+        //             </div>
+        //         </div>
+        //     </div>
+        // </>
     )
 }

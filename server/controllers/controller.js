@@ -15,7 +15,9 @@ class Controller {
         try {
             const { search, sort, filter } = req.query;
             const option = {
-                where: {}
+                where: {
+                    status: false
+                }
             };
 
             if (filter) {
@@ -118,6 +120,7 @@ class Controller {
             const link = `http://localhost:5173/reset-password/${findUser.id}/${token}`
 
             await User.nodemailer(email, link)
+            res.status(200).json({message: "Email sent successfully"})
 
         } catch (error) {
             next(error)
@@ -315,8 +318,14 @@ class Controller {
 
     static async payment(req, res, next) {
         try {
+            const {id} = req.params;
             const { orderId } = req.body;
+
+            // const findAnimalById = await Animal.findByPk(id);
+            
+            await Animal.update({status: true}, {where: { id }})
             await Transaction.update({ isPaid: true }, { where: { orderId } });
+            // await Animal.update({status: true}, where: {})
 
             const order = await Transaction.findOne({ where: { orderId } })
             if (!order) {

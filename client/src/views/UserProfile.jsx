@@ -12,7 +12,7 @@ export default function UserProfile() {
     const [email, setEmail] = useState("")
     const [imageUrl, setImageUrl] = useState("")
     const [phoneNumber, setPhoneNumber] = useState("")
-    const [password, setPassword] = useState("");
+    // const [password, setPassword] = useState("");
 
     const fetchUser = async () => {
         try {
@@ -22,12 +22,11 @@ export default function UserProfile() {
                 }
             })
 
-            setPassword(data.password)
+            // setPassword(data.password)
             setName(data.name);
             setEmail(data.email);
             setImageUrl(data.imageUrl);
             setPhoneNumber(data.phoneNumber);
-            console.log(data)
 
         } catch (error) {
             console.error(error);
@@ -44,7 +43,7 @@ export default function UserProfile() {
                 data: {
                     name: name,
                     // email: email,
-                    password: password,
+                    // password: password,
                     imageUrl: imageUrl,
                     phoneNumber: phoneNumber,
                 },
@@ -75,7 +74,7 @@ export default function UserProfile() {
                 }
             })
 
-            navigate("/")
+            navigate("/login")
             showToastSuccess(data?.message, "message")
 
         } catch (error) {
@@ -93,16 +92,12 @@ export default function UserProfile() {
         <>
             <div className="w-full flex justify-center">
                 <div className="w-full bg-white border border-gray-200 rounded-lg shadow flex justify-center">
+
                     <div className="flex flex-col items-center pb-10 w-1/2">
-                        <div className="flex justify-end px-4 pt-4 w-full">
-                            <button
-                                id="dropdownButton"
-                                data-dropdown-toggle="dropdown"
-                                className="inline-block text-gray-500 dark:text-gray-400 hover:bg-gray-100"
-                                type="button"
-                            >
-                            </button>
-                        </div>
+                        <Link to="/" className='justify-start'>
+                            <i className='bx bx-left-arrow-alt'></i>
+                            <span>Back to Homepage</span>
+                        </Link>
                         <img
                             className="w-24 h-24 mb-3 rounded-full shadow-lg object-cover"
                             src={imageUrl}
@@ -140,7 +135,7 @@ export default function UserProfile() {
                                     required=""
                                 />
                             </div>
-                            <div className="mb-5 mt-5">
+                            {/* <div className="mb-5 mt-5">
                                 <label
                                     htmlFor="password"
                                     className="block mb-2 text-sm font-medium text-gray-900"
@@ -156,7 +151,7 @@ export default function UserProfile() {
                                     placeholder="name@flowbite.com"
                                     required=""
                                 />
-                            </div>
+                            </div> */}
                             <div className="mb-5 mt-5">
                                 <label
                                     htmlFor="phoneNumber"

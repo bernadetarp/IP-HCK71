@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import showToastError from "../utils/toast.js";
 // import Card from "../components/Card";
 import axios from "../utils/axios.js"
 import { useNavigate, useParams } from "react-router-dom";
@@ -32,6 +33,7 @@ export default function FormApplication() {
             setPhoneNumber(data.phoneNumber);
 
         } catch (error) {
+            showToastError(error.response?.data?.message || error.message, "error")
             console.error(error);
         }
     }

@@ -3,6 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 // import { GoogleLogin } from '@react-oauth/google';
 import axios from "../utils/axios"
 import showToastError from "../utils/toast";
+import { showToastSuccess } from "../utils/toast";
 
 export default function Login() {
     const [email, setEmail] = useState("");
@@ -24,6 +25,8 @@ export default function Login() {
 
             localStorage.setItem("access_token", data.access_token)
             navigate("/")
+            showToastSuccess(data?.message, "message")
+
 
         } catch (error) {
             showToastError(error.response?.data?.message || error.message, "error")
