@@ -1,20 +1,22 @@
 import axios from "../utils/axios";
 import { useState } from "react"
 import showToastError from "../utils/toast";
+import { showToastSuccess } from "../utils/toast";
 
 export default function ForgotPassword() {
     const [email, setEmail] = useState("");
-    console.log(email)
 
     const handleSubmit = async (event) => {
         event.preventDefault();
 
         try {
-            await axios({
+            const {data} = await axios({
                 method: "POST",
                 url: "/forgot-password",
                 data: { email: email }
             })
+
+            showToastSuccess(data?.message, "message")
 
         } catch (error) {
             showToastError(error.response?.data?.message || error.message, "error")

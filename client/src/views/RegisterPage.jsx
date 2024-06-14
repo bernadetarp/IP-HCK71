@@ -2,6 +2,7 @@ import { useState } from "react"
 import { useNavigate, Link } from "react-router-dom";
 import axios from "../utils/axios"
 import showToastError from "../utils/toast";
+import { showToastSuccess } from "../utils/toast";
 
 export default function Register() {
     const [name, setName] = useState("");
@@ -14,7 +15,7 @@ export default function Register() {
         event.preventDefault();
 
         try {
-            await axios({
+            const {data} = await axios({
                 method: "POST",
                 url: "/register",
                 data: {
@@ -25,6 +26,7 @@ export default function Register() {
             })
 
             navigate("/login")
+            showToastSuccess(data?.message, "message")
 
         } catch (error) {
             showToastError(error.response?.data?.message || error.message, "error")

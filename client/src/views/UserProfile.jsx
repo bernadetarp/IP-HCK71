@@ -27,7 +27,6 @@ export default function UserProfile() {
             setEmail(data.email);
             setImageUrl(data.imageUrl);
             setPhoneNumber(data.phoneNumber);
-            console.log(data)
 
         } catch (error) {
             console.error(error);
@@ -75,7 +74,7 @@ export default function UserProfile() {
                 }
             })
 
-            navigate("/")
+            navigate("/login")
             showToastSuccess(data?.message, "message")
 
         } catch (error) {

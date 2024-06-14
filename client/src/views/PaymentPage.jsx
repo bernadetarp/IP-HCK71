@@ -33,7 +33,6 @@ export default function Payment() {
                     Authorization: `Bearer ${localStorage.access_token}`
                 }
             })
-            console.log(data, "<<<< data dari PaymentPage")
 
             window.snap.pay(data.midtransToken.token, {
                 // window.snap.embed(data.token, {
