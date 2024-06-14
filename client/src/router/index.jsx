@@ -8,6 +8,7 @@ import Homepage from "../views/HomePage";
 import Payment from "../views/PaymentPage";
 import DetailPage from "../views/DetailPage";
 import FormApplication from "../views/FormApplication";
+import UserProfile from "../views/UserProfile";
 
 const router = createBrowserRouter([
     {
@@ -44,21 +45,21 @@ const router = createBrowserRouter([
     },
     {
         path: "/user-profile",
-        element: <div>User Profile</div>
+        element: <UserProfile />
     },
     {
         path: "/:id",
         element: <DetailPage />
     },
     {
-        path: "/:id/application-form",
+        path: "/transaction/:id/application-form",
         element: <FormApplication />,
         loader: () => {
-            return !localStorage.getItem("access_token") ? redirect("/:id") : null;
+            return !localStorage.getItem("access_token") ? redirect("/") : null;
         }
     },
     {
-        path: "/:id/payment",
+        path: "/transaction/:id/payment",
         element: <Payment />,
         loader: () => {
             return !localStorage.getItem("access_token") ? redirect("/login") : null;

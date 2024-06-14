@@ -179,7 +179,7 @@ class Controller {
             const { id } = req.user;
             const findUserById = await User.findByPk(id);
 
-            res.status(200).json({id, email: findUserById.email, name: findUserById.name, phoneNumber: findUserById.phoneNumber});
+            res.status(200).json({id, email: findUserById.email, name: findUserById.name, phoneNumber: findUserById.phoneNumber, imageUrl: findUserById.imageUrl});
 
         } catch (error) {
             next(error);
@@ -191,15 +191,9 @@ class Controller {
             const { id } = req.user;
             const findUserById = await User.findByPk(id);
 
-            const { name, email, password, imageUrl, phoneNumber } = req.body
+            const { name, email, imageUrl, phoneNumber } = req.body
 
-            if (!password) {
-                throw { name: "PasswordRequired" }
-            } else if (password.length < 8) {
-                res.status(400).json({ message: "Minimum password length is 8" })
-            }
-
-            await findUserById.update({ name, email, password: hashPassword(password), imageUrl, phoneNumber });
+            await findUserById.update({ name, email, imageUrl, phoneNumber });
 
             res.status(200).json({ message: `Your profile successfully updated` });
 
@@ -214,8 +208,6 @@ class Controller {
             const findUserById = await User.findByPk(id);
 
             await Transaction.destroy({ where: { UserId: id } });
-
-            // option delete cascade truncate -> di findUser
             await findUserById.destroy();
 
             res.status(200).json({ message: `Your account successfully deleted` });
@@ -260,6 +252,7 @@ class Controller {
             const { id } = req.params;
 
             const { name, email, address, phoneNumber, householdType, isHavingPets, isHavingChildren, isAgree } = req.body;
+            console.log(req.body)
 
             if (!name || !email || !address || !phoneNumber || !householdType || !isHavingPets || !isHavingChildren || !isAgree) {
                 res.status(400).json({ message: "Please fill in all the data" });
@@ -306,6 +299,7 @@ class Controller {
             };
 
             const midtransToken = await snap.createTransaction(parameter)
+            console.log(midtransToken)
 
             if (midtransToken) {
                 await Transaction.create({ orderId: orderId, UserId: findUser.id, AnimalId: findAnimalById.id, isFilledForm: true });
