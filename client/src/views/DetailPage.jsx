@@ -30,7 +30,7 @@ export default function DetailPage() {
                 <div className="max-w-sm w-full lg:max-w-full lg:flex">
                     <div
                         className="h-80 lg:h-auto object-cover lg:w-80 flex-none bg-cover rounded-t lg:rounded-t-none lg:rounded-l text-center overflow-hidden"
-                        style={{ backgroundImage: 'url()' }}
+                        style={{ backgroundImage: 'url("https://upload.wikimedia.org/wikipedia/commons/thumb/3/3a/Cat03.jpg/1200px-Cat03.jpg")' }}
                         title="Cat"
                     ></div>
                     <div className="border-r border-b border-l border-gray-400 lg:border-l-0 lg:border-t lg:border-gray-400 bg-white rounded-b lg:rounded-b-none lg:rounded-r p-4 flex flex-col justify-between leading-normal">
