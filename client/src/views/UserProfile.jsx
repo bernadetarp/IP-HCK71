@@ -12,7 +12,6 @@ export default function UserProfile() {
     const [email, setEmail] = useState("")
     const [imageUrl, setImageUrl] = useState("")
     const [phoneNumber, setPhoneNumber] = useState("")
-    // const [password, setPassword] = useState("");
 
     const fetchUser = async () => {
         try {
@@ -22,7 +21,6 @@ export default function UserProfile() {
                 }
             })
 
-            // setPassword(data.password)
             setName(data.name);
             setEmail(data.email);
             setImageUrl(data.imageUrl);
@@ -42,8 +40,6 @@ export default function UserProfile() {
                 method: "PUT",
                 data: {
                     name: name,
-                    // email: email,
-                    // password: password,
                     imageUrl: imageUrl,
                     phoneNumber: phoneNumber,
                 },
@@ -90,14 +86,21 @@ export default function UserProfile() {
 
     return (
         <>
-            <div className="w-full flex justify-center">
-                <div className="w-full bg-white border border-gray-200 rounded-lg shadow flex justify-center">
-
-                    <div className="flex flex-col items-center pb-10 w-1/2">
-                        <Link to="/" className='justify-start'>
+            <div className="w-full flex justify-center items-center bg-gray-100">
+                <div className="w-full max-w-lg my-10 bg-white border border-gray-200 rounded-lg shadow-lg p-6 flex flex-col items-center">
+                    <div className="flex w-full justify-between items-center mb-6">
+                        <Link to="/" className='text-center align-middle'>
                             <i className='bx bx-left-arrow-alt'></i>
                             <span>Back to Homepage</span>
                         </Link>
+                        <Link
+                            onClick={handleDelete}
+                            className="text-red-700 hover:text-white border border-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2"
+                        >
+                            Delete Account
+                        </Link>
+                    </div>
+                    <div className="flex flex-col items-center justify-center pb-10 w-full">
                         <img
                             className="w-24 h-24 mb-3 rounded-full shadow-lg object-cover"
                             src={imageUrl}
@@ -109,16 +112,8 @@ export default function UserProfile() {
                         <span className="text-sm text-gray-500">
                             {email}
                         </span>
-                        <div className="flex mt-4 md:mt-6">
-                            <Link
-                                onClick={handleDelete}
-                                className="focus:outline-none text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2"
-                            >
-                                Delete Account
-                            </Link>
-                        </div>
                         <form className="w-full" onSubmit={handleSubmit}>
-                            <div className="mb-5 mt-5">
+                            <div className="mb-5 mt-5 w-full max-w-md">
                                 <label
                                     htmlFor="name"
                                     className="block mb-2 text-sm font-medium text-gray-900"
@@ -131,28 +126,11 @@ export default function UserProfile() {
                                     value={name}
                                     onChange={(event) => { setName(event.target.value) }}
                                     className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
-                                    placeholder="name@flowbite.com"
+                                    placeholder="Your Name"
                                     required=""
                                 />
                             </div>
-                            {/* <div className="mb-5 mt-5">
-                                <label
-                                    htmlFor="password"
-                                    className="block mb-2 text-sm font-medium text-gray-900"
-                                >
-                                    Password
-                                </label>
-                                <input
-                                    type="password"
-                                    id="password"
-                                    value={password}
-                                    onChange={(event) => { setPassword(event.target.value) }}
-                                    className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
-                                    placeholder="name@flowbite.com"
-                                    required=""
-                                />
-                            </div> */}
-                            <div className="mb-5 mt-5">
+                            <div className="mb-5 mt-5 w-full max-w-md">
                                 <label
                                     htmlFor="phoneNumber"
                                     className="block mb-2 text-sm font-medium text-gray-900"
@@ -165,11 +143,11 @@ export default function UserProfile() {
                                     value={phoneNumber}
                                     onChange={(event) => { setPhoneNumber(event.target.value) }}
                                     className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
-                                    placeholder=""
+                                    placeholder="Your Phone Number"
                                     required=""
                                 />
                             </div>
-                            <div className="mb-5 mt-5">
+                            <div className="mb-5 mt-5 w-full max-w-md">
                                 <label
                                     htmlFor="imageUrl"
                                     className="block mb-2 text-sm font-medium text-gray-900"
@@ -182,7 +160,7 @@ export default function UserProfile() {
                                     value={imageUrl}
                                     onChange={(event) => { setImageUrl(event.target.value) }}
                                     className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
-                                    placeholder=""
+                                    placeholder="Image URL"
                                     required=""
                                 />
                             </div>
@@ -196,7 +174,6 @@ export default function UserProfile() {
                     </div>
                 </div>
             </div>
-
 
         </>
     )

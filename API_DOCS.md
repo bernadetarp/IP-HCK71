@@ -4,9 +4,11 @@
 
 List of available endpoints:
 
-Public:
-- `GET /`
-- `GET /:id`
+Public (animals):
+- `GET /animals`
+- `GET /animals/:id`
+
+Public (user):
 - `POST /login`
 - `POST /register`
 - `POST /login-google`
@@ -127,7 +129,7 @@ _Response (401 - Unauthorized)_
 
 &nbsp;
 
-## 3. GET /
+## 3. GET /animals/
 
 - **Description:** Retrieve all animals available in the shelter.
 
@@ -160,7 +162,7 @@ _Response (200 - OK)_
 
 &nbsp;
 
-## GET /:id
+## GET /animals/:id
 
 - **Description:** Retrieve a specific animal by its ID.
 

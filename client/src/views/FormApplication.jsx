@@ -1,9 +1,7 @@
 import { useEffect, useState } from "react";
 import showToastError from "../utils/toast.js";
-// import Card from "../components/Card";
 import axios from "../utils/axios.js"
 import { useNavigate, useParams } from "react-router-dom";
-// import { Link } from "react-router-dom";
 import { PreviewCard } from "../components/Card.jsx";
 
 export default function FormApplication() {
@@ -11,11 +9,6 @@ export default function FormApplication() {
     const [name, setName] = useState("")
     const [email, setEmail] = useState("")
     const [phoneNumber, setPhoneNumber] = useState("")
-    // const [havingChildren, setHavingChildren] = useState("")
-    // const [address, setAddress] = useState("");
-    // const [householdType, sethouseHoldType] = useState([])
-    // const [isHavingPets, setIsHavingPets] = useState(false);
-    // const [isAgree, setIsAgree] = useState(false);
 
     const { id } = useParams();
     let navigate = useNavigate();
@@ -40,7 +33,7 @@ export default function FormApplication() {
 
     const fetchAnimalById = async () => {
         try {
-            let { data } = await axios.get(`/${id}`)
+            let { data } = await axios.get(`/animals/${id}`)
             setAnimals(data);
 
         } catch (error) {
@@ -48,30 +41,10 @@ export default function FormApplication() {
         }
     }
 
-    // name, email, address, phoneNumber, householdType, isHavingPets, isHavingChildren, isAgree
-
     const handleSubmit = async (event) => {
         event.preventDefault();
 
         try {
-            // await axios({
-            //     method: "POST",
-            //     url: `/${id}/application-form`,
-            //     data: {
-            //         name: name,
-            //         email: email,
-            //         phoneNumber: phoneNumber,
-            //         addres: address,
-            //         havingChildren: havingChildren,
-            //         householdType: householdType,
-            //         isHavingPets: isHavingPets,
-            //         isAgree: isAgree
-            //     },
-            //     headers: {
-            //         Authorization: `Bearer ${localStorage.getItem("access_token")}`
-            //     }
-            // })
-
             navigate(`/transaction/${id}/payment`)
 
         } catch (error) {
@@ -84,11 +57,12 @@ export default function FormApplication() {
             fetchAnimalById()
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
+    console.log(animals, "<<< dari form application")
 
     return (
-        <div className="p-4">
-            <PreviewCard key={id} animals={animals} />
-            <form className="max-w-sm mt-5 mx-auto" onSubmit={handleSubmit}>
+        <div className="pt-4 pb-10">
+            <form className="w-1/2 mt-5 mx-auto" onSubmit={handleSubmit}>
+                <PreviewCard key={id} animals={animals} />
                 <div className="mb-5">
                     <label
                         htmlFor="email"
@@ -227,7 +201,7 @@ export default function FormApplication() {
                         <input
                             id="terms"
                             type="checkbox"
-                            
+
                             defaultValue=""
                             className="w-4 h-4 border border-gray-300 rounded bg-gray-50 focus:ring-3 focus:ring-blue-300"
                             required={true}

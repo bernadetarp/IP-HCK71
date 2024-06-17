@@ -8,8 +8,7 @@ const Controller = require("../controllers/controller");
 const errorHandler = require("../middlewares/error-handler.js");
 const authentication = require('../middlewares/authentication.js');
 
-router.get("/", Controller.showAllAnimals)
-router.get("/:id", Controller.showAnimalById);
+router.use("/animals", animals)
 
 router.post("/register", Controller.register);
 router.post("/login", Controller.login);
