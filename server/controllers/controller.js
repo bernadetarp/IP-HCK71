@@ -275,11 +275,7 @@ class Controller {
 
             const findAnimalById = await Animal.findByPk(id);
             const findUser = await User.findByPk(UserId);
-
-            // if (findUser.isPaid) {
-            //     throw { name: "AlreadyPaid" }
-            // }
-
+            
             let snap = new midtransClient.Snap({
                 // Set to true if you want Production Environment (accept real transaction).
                 isProduction: false,
@@ -311,7 +307,6 @@ class Controller {
             res.status(200).json({ midtransToken, orderId });
 
         } catch (error) {
-            console.log(error, "<<< error dari controller")
             next(error)
         }
     }
@@ -344,7 +339,6 @@ class Controller {
                     Authorization: `Basic ${serverKey}`
                 }
             })
-            console.log(response.data, "<<< dari response.data payment")
 
         } catch (error) {
             console.log(error)
