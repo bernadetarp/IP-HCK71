@@ -3,6 +3,7 @@ import axios from "../utils/axios";
 import { useState } from "react";
 import { useEffect } from "react";
 import { Link } from "react-router-dom";
+import showToastError, {showToastSuccess} from "../utils/toast";
 
 
 export default function Payment() {
@@ -11,8 +12,9 @@ export default function Payment() {
 
     const fetchAnimalById = async () => {
         try {
-            let { data } = await axios.get(`/${id}`)
+            let { data } = await axios.get(`/animals/${id}`)
             setStatus(data.status);
+            console.log(data)
 
         } catch (error) {
             console.error(error);
@@ -35,10 +37,9 @@ export default function Payment() {
             })
 
             window.snap.pay(data.midtransToken.token, {
-                // window.snap.embed(data.token, {
-                // embedId: 'snap-container',
                 onSuccess: async function (result) {
-                    alert("payment success!"); console.log(result);
+                    showToastSuccess("payment success!"); 
+                    console.log(result);
                     await axios({
                         method: "PATCH",
                         url: `/transaction/${id}/payment`,
@@ -51,13 +52,15 @@ export default function Payment() {
                     })
                 },
                 onPending: function (result) {
-                    alert("wating your payment!"); console.log(result);
+                    showToastError("wating your payment!")
+                    console.log(result);
                 },
                 onError: function (result) {
+                    showToastError("payment failed!")
                     alert("payment failed!"); console.log(result);
                 },
                 onClose: function () {
-                    alert('you closed the popup without finishing the payment');
+                    showToastError("you closed the popup without finishing the payment")
                 }
             })
         } catch (error) {
